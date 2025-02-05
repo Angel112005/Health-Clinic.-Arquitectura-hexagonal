@@ -16,6 +16,7 @@ func SetupRouter(
 	
 	r.POST("/doctors", doctorController.Create)
 	r.GET("/doctors", doctorController.List)
+	r.GET("/doctors/:id", doctorController.GetByID)
 	r.PUT("/doctors/:id", doctorController.Update)
 	r.DELETE("/doctors/:id", doctorController.Delete)
 

@@ -2,8 +2,8 @@ package doctor
 
 import (
 	"github.com/gin-gonic/gin"
-	appDoctor "my-clinic-api/doctor/application" // Casos de uso de Doctor
-	domainDoctor "my-clinic-api/doctor/domain" // Entidad Doctor
+	appDoctor "my-clinic-api/doctor/application" 
+	domainDoctor "my-clinic-api/doctor/domain" 
 	"net/http"
 	"strconv"
 )
@@ -14,14 +14,16 @@ type Controller struct {
 	listDoctors  *appDoctor.ListDoctors
 	updateDoctor *appDoctor.UpdateDoctor
 	deleteDoctor *appDoctor.DeleteDoctor
+	listDoctorByID *appDoctor.ListDoctorByID 
 }
 
-func NewController(cd *appDoctor.CreateDoctor, ld *appDoctor.ListDoctors, ud *appDoctor.UpdateDoctor, dd *appDoctor.DeleteDoctor) *Controller {
+func NewController(cd *appDoctor.CreateDoctor, ld *appDoctor.ListDoctors, ud *appDoctor.UpdateDoctor, dd *appDoctor.DeleteDoctor, ldbi *appDoctor.ListDoctorByID,	) *Controller {
 	return &Controller{
 		createDoctor: cd,
 		listDoctors:  ld,
 		updateDoctor: ud,
 		deleteDoctor: dd,
+		listDoctorByID: ldbi,
 	}
 }
 
@@ -92,4 +94,27 @@ func convertID(id string, ctx *gin.Context) int {
 		ctx.Abort()
 	}
 	return parsedID
+}
+
+
+func (c *Controller) GetByID(ctx *gin.Context) {
+	idParam := ctx.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
+
+	doctor, err := c.listDoctorByID.Execute(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch doctor"})
+		return
+	}
+
+	if doctor == nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Doctor not found"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, doctor)
 }

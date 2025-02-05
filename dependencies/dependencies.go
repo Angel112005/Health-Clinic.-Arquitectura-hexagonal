@@ -31,6 +31,8 @@ func InitializeDependencies() (*AppDependencies, error) {
 	listDoctorsUseCase := appDoctor.NewListDoctors(doctorRepo)
 	updateDoctorUseCase := appDoctor.NewUpdateDoctor(doctorRepo)
 	deleteDoctorUseCase := appDoctor.NewDeleteDoctor(doctorRepo)
+	listDoctorByIDUseCase := appDoctor.NewListDoctorByID(doctorRepo)
+
 
 	createAppointmentUseCase := appAppointment.NewCreateAppointment(appointmentRepo)
 	listAppointmentsUseCase := appAppointment.NewListAppointments(appointmentRepo)
@@ -43,6 +45,7 @@ func InitializeDependencies() (*AppDependencies, error) {
 		listDoctorsUseCase,
 		updateDoctorUseCase,
 		deleteDoctorUseCase,
+		listDoctorByIDUseCase,
 	)
 
 	appointmentController := appointmentAPI.NewController(
