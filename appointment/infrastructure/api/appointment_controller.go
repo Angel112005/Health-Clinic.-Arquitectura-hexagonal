@@ -2,8 +2,8 @@ package appointment
 
 import (
 	"github.com/gin-gonic/gin"
-	appAppointment "my-clinic-api/internal/application/appointment"
-	domainAppointment "my-clinic-api/internal/domain/appointment"
+	appAppointment "my-clinic-api/appointment/application"
+	domainAppointment "my-clinic-api/appointment/domain"
 	"net/http"
 	"strconv"
 	"fmt"

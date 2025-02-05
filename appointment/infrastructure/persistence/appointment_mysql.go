@@ -2,7 +2,7 @@ package appointment
 
 import (
 	"database/sql"
-	"my-clinic-api/internal/domain/appointment"
+	"my-clinic-api/appointment/domain"
 )
 
 type AppointmentMySQL struct {

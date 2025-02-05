@@ -1,24 +1,26 @@
-package api
+package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"my-clinic-api/internal/infrastructure/api/doctor"
-	"my-clinic-api/internal/infrastructure/api/appointment"
+	doctorAPI "my-clinic-api/doctor/infrastructure/api" 
+	appointmentAPI "my-clinic-api/appointment/infrastructure/api" 
 )
 
+
 func SetupRouter(
-	doctorController *doctor.Controller,
-	appointmentController *appointment.Controller,
+	doctorController *doctorAPI.Controller,
+	appointmentController *appointmentAPI.Controller,
 ) *gin.Engine {
 	r := gin.Default()
 
-	// Rutas CRUD para Doctores
+	
 	r.POST("/doctors", doctorController.Create)
 	r.GET("/doctors", doctorController.List)
+	r.GET("/doctors/:id", doctorController.GetByID)
 	r.PUT("/doctors/:id", doctorController.Update)
 	r.DELETE("/doctors/:id", doctorController.Delete)
 
-	// Rutas CRUD para Citas
+	
 	r.POST("/appointments", appointmentController.Create)
 	r.GET("/appointments", appointmentController.List)
 	r.PUT("/appointments/:id", appointmentController.Update)

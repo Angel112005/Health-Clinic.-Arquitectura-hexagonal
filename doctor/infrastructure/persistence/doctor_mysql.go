@@ -2,8 +2,9 @@ package doctor
 
 import (
 	"database/sql"
-	"my-clinic-api/internal/domain/doctor"
+	"my-clinic-api/doctor/domain" // Entidad Doctor y repositorio
 )
+
 
 type DoctorMySQL struct {
 	db *sql.DB
@@ -59,18 +60,4 @@ func (r *DoctorMySQL) Delete(id int) error {
 	_, err := r.db.Exec("DELETE FROM doctors WHERE id = ?", id)
 	return err
 }
-
-
-
-
-// func (r *DoctorMySQL) Update(d doctor.Doctor) error {
-// 	_, err := r.db.Exec("UPDATE doctors SET name = ?, specialty = ?, experience = ? WHERE id = ?",
-// 		d.Name, d.Specialty, d.Experience, d.ID)
-// 	return err
-// }
-
-// func (r *DoctorMySQL) Delete(id int) error {
-// 	_, err := r.db.Exec("DELETE FROM doctors WHERE id = ?", id)
-// 	return err
-// }
 
