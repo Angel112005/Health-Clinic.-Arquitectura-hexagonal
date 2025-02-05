@@ -7,14 +7,14 @@ import (
 )
 
 func main() {
-	// Inicializar dependencias
+	// Inicializamos las dependencias
 	appDeps, err := dependencies.InitializeDependencies()
 	if err != nil {
 		fmt.Println("Error initializing dependencies:", err)
 		return
 	}
 
-	// Configurar el router y levantar el servidor
+	// Configuramos el router y para poder correr el servidor
 	router := server.SetupRouter(appDeps.DoctorController, appDeps.AppointmentController)
 	router.Run(":8080")
 }
