@@ -19,6 +19,7 @@ func main() {
 		fmt.Println("Error connecting to the database:", err)
 		return
 	}
+	//Defer para no perder la conexxión
 	defer db.Close()
 
 	// Inicializar repositorios
