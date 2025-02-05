@@ -2,11 +2,12 @@ package doctor
 
 import (
 	"github.com/gin-gonic/gin"
-	appDoctor "my-clinic-api/internal/application/doctor" // Alias para application/doctor
-	domainDoctor "my-clinic-api/internal/domain/doctor"   // Alias para domain/doctor
+	appDoctor "my-clinic-api/doctor/application" // Casos de uso de Doctor
+	domainDoctor "my-clinic-api/doctor/domain" // Entidad Doctor
 	"net/http"
 	"strconv"
 )
+
 
 type Controller struct {
 	createDoctor *appDoctor.CreateDoctor

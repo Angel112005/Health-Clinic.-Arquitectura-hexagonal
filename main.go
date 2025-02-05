@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"my-clinic-api/config"
-	appDoctor "my-clinic-api/internal/application/doctor"
-	appAppointment "my-clinic-api/internal/application/appointment"
-	doctorAPI "my-clinic-api/internal/infrastructure/api/doctor"
-	appointmentAPI "my-clinic-api/internal/infrastructure/api/appointment"
-	"my-clinic-api/internal/infrastructure/persistence/doctor"
-	"my-clinic-api/internal/infrastructure/persistence/appointment"
-	api "my-clinic-api/internal/infrastructure/api"
+	appDoctor "my-clinic-api/doctor/application"
+	doctorAPI "my-clinic-api/doctor/infrastructure/api"
+	doctorPersistence "my-clinic-api/doctor/infrastructure/persistence"
+	appAppointment "my-clinic-api/appointment/application"
+	appointmentAPI "my-clinic-api/appointment/infrastructure/api"
+	appointmentPersistence "my-clinic-api/appointment/infrastructure/persistence"
+	"my-clinic-api/server" // Importación corregida para rutas
 )
 
 func main() {
@@ -19,19 +19,22 @@ func main() {
 		fmt.Println("Error connecting to the database:", err)
 		return
 	}
-	//Defer para no perder la conexxión
 	defer db.Close()
 
 	// Inicializar repositorios
-	doctorRepo := doctor.NewDoctorMySQL(db)
-	// Inicializar repositorios
-	appointmentRepo := appointment.NewAppointmentMySQL(db)
+	doctorRepo := doctorPersistence.NewDoctorMySQL(db)
+	appointmentRepo := appointmentPersistence.NewAppointmentMySQL(db)
 
 	// Inicializar casos de uso
 	createDoctorUseCase := appDoctor.NewCreateDoctor(doctorRepo)
 	listDoctorsUseCase := appDoctor.NewListDoctors(doctorRepo)
 	updateDoctorUseCase := appDoctor.NewUpdateDoctor(doctorRepo)
 	deleteDoctorUseCase := appDoctor.NewDeleteDoctor(doctorRepo)
+
+	createAppointmentUseCase := appAppointment.NewCreateAppointment(appointmentRepo)
+	listAppointmentsUseCase := appAppointment.NewListAppointments(appointmentRepo)
+	updateAppointmentUseCase := appAppointment.NewUpdateAppointment(appointmentRepo)
+	deleteAppointmentUseCase := appAppointment.NewDeleteAppointment(appointmentRepo)
 
 	// Inicializar controladores
 	doctorController := doctorAPI.NewController(
@@ -41,13 +44,6 @@ func main() {
 		deleteDoctorUseCase,
 	)
 
-	// Inicializar casos de uso
-	createAppointmentUseCase := appAppointment.NewCreateAppointment(appointmentRepo)
-	listAppointmentsUseCase := appAppointment.NewListAppointments(appointmentRepo)
-	updateAppointmentUseCase := appAppointment.NewUpdateAppointment(appointmentRepo)
-	deleteAppointmentUseCase := appAppointment.NewDeleteAppointment(appointmentRepo)
-
-	// Inicializar controladores
 	appointmentController := appointmentAPI.NewController(
 		createAppointmentUseCase,
 		listAppointmentsUseCase,
@@ -56,6 +52,6 @@ func main() {
 	)
 
 	// Configurar el router y levantar el servidor
-	router := api.SetupRouter(doctorController, appointmentController)
+	router := server.SetupRouter(doctorController, appointmentController) // Cambiado
 	router.Run(":8080")
 }

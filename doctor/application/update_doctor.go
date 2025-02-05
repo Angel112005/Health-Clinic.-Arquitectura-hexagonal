@@ -1,6 +1,6 @@
 package doctor
 
-import "my-clinic-api/internal/domain/doctor"
+import "my-clinic-api/doctor/domain"
 
 type UpdateDoctor struct {
 	repo doctor.Repository

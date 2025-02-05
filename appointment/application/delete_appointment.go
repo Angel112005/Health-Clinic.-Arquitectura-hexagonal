@@ -1,6 +1,6 @@
 package appointment
 
-import "my-clinic-api/internal/domain/appointment"
+import "my-clinic-api/appointment/domain"
 
 type DeleteAppointment struct {
 	repo appointment.Repository

@@ -2,8 +2,9 @@ package doctor
 
 import (
 	"database/sql"
-	"my-clinic-api/internal/domain/doctor"
+	"my-clinic-api/doctor/domain" // Entidad Doctor y repositorio
 )
+
 
 type DoctorMySQL struct {
 	db *sql.DB
